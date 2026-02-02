@@ -2,6 +2,7 @@ from src.CDN.api.api import CdnAPI
 from mcp.server.fastmcp import FastMCP
 from .note import note
 from src.utils.response import HandlerVolcResponse
+from src.tools.common_tools import describe_cdn_config
 import json
 
 
@@ -56,17 +57,7 @@ def create_mcp_server():
            {original_note}
         """
 
-    @mcp.tool()
-    def describe_cdn_config(body: dict) -> str:
-        """
-        获取一个加速域名的配置详情。如果该加速域名已删除，您无法获取其配置详情。
-        Call steps:
-        1. Pass "describe_cdn_config" as an input parameter to invoke the `get_note` method to obtain the parameter description.
-        2. After obtaining the parameter description, invoke  describe_cdn_config
-        """
-        reqs = service.mcp_post("McpDescribeCdnConfig", {}, json.dumps(body))
-
-        return HandlerVolcResponse(reqs)
+    mcp.tool()(describe_cdn_config)
 
     @mcp.tool()
     def list_cdn_domains(body: dict) -> str:
